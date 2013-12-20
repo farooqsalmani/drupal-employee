@@ -1,0 +1,87 @@
+<?php
+
+/**
+* Implementation of hook_install().
+*/
+function employee_install() {
+    // Use schema API to create database table.
+    drupal_install_schema('employee');
+    db_query("DELETE FROM {cache}");
+}
+
+/**
+* Implementation of hook_uninstall().
+*/
+function employee_uninstall() {
+    // Use schema API to delete database table.
+    drupal_uninstall_schema('employee');
+}
+
+/**
+* Implementation of hook_schema().
+*/
+function employee_schema() {
+    $schema['employee'] = array(
+	'description' => t('Stores the employee information.'),
+	'fields' => array(
+	    'id' => array(
+		'type' => 'serial',
+		'unsigned' => TRUE,
+		'not null' => TRUE,
+		'description' => t('Unique id of the employee'),
+	    ),
+	    'name' => array(
+		'description' => t('Full name of the employee.'),
+		'type' => 'varchar',
+		'length' => 100, 
+		'not null' => TRUE,
+		'size' => 'normal'
+	    ),
+	    'email' => array(
+		'description' => t('Email id of the employee.'),
+		'type' => 'varchar',
+		'length' => 100, 
+		'not null' => TRUE
+	    ),
+	    'age' => array(
+		'type' => 'int',
+		'unsigned' => TRUE,
+		'not null' => TRUE,
+		'description' => t('Age of the employee'),
+	    ),  
+	    'gender' => array(
+		'type' => 'varchar',
+		'length' => 6, 
+		'not null' => TRUE,
+		'description' => t('Gender of the emaployee'),
+	    ),
+	    'address' => array(
+		'type' => 'varchar',
+		'length' => 255, 
+		'not null' => TRUE,
+		'description' => t('Address of the emaployee'),
+	    ),
+	    'nationality' => array(
+		'type' => 'varchar',
+		'length' => 50, 
+		'not null' => TRUE,
+		'description' => t('Nationality of the emaployee'),
+	    ),
+	    'salary' => array(
+		'type' => 'float',
+		'not null' => TRUE,
+		'size' => 'medium',
+		'description' => t('Salary of the emaployee'),
+	    ),
+	    'created' => array(
+		'description' => t('A Unix timestamp indicating when the employee was created.'),
+		'type' => 'int',
+		'not null' => TRUE,
+	    ),
+	),
+	'primary key' => array('id'),
+    );
+    return $schema;
+}
+
+?>
