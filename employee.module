@@ -35,7 +35,7 @@ function employee_permission() {
  */
 function employee_menu(){
 	$items['employee/list_employees']=array(
-		'title'=>'Employees',
+		'title'=>t('Employees'),
 		'page callback'=>'list_employees',
 		'access arguments'=>array('show employee'),
 		'type' => MENU_CALLBACK,
