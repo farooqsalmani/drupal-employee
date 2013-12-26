@@ -1,5 +1,5 @@
 <?php
-// $Id: employee.module,v 6.12 2009/07/12 14:45:27 goba Exp $
+// $Id: employee.module, v 7.0 2009/07/12 14:45:27 $
 
 /**
  * @file
@@ -32,139 +32,143 @@ function employee_permission() {
 
 /**
  * Implementation of hook_menu().
+ * @author Farooq Ahmad
+ * @return array
  */
 function employee_menu(){
-	$items['employee/list_employees']=array(
-		'title'=>t('Employees'),
-		'page callback'=>'list_employees',
-		'access arguments'=>array('show employee'),
-		'type' => MENU_CALLBACK,
-	);
-	$items['employee/add']=array(
-		'title'=>'Employee Add Form',
-		'page callback' => 'drupal_get_form',
-		'page arguments' => array('employees_add_form'),
-		'access arguments'=>array('add employee'),
-		'type' => MENU_CALLBACK,
-	);
-	$items['employee/edit/%']=array(
-		'title'=>'Employee Edit Form',
-		'page callback'=>'drupal_get_form',
-		'page arguments'=>array('employees_add_form',2),
-		'access arguments'=>array('edit employee'),
-		'type' => MENU_CALLBACK,
-	
-	);
-	$items['employee/delete/%']=array(
-		'title'=>'Employee Edit Form',
-		'page callback'=>'delete_employee',
-		'access arguments'=>array('delete employee'),
-		'type' => MENU_CALLBACK,
-	);
-	return $items;
+    $items['employee/list_employees'] = array(
+        'title' => t('Employees'),
+        'page callback' => 'list_employees',
+        'access arguments' => array('show employee'),
+        'type' => MENU_CALLBACK,
+    );
+    $items['employee/add'] = array(
+        'title' => t('Employee Add Form'),
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('employees_add_form'),
+        'access arguments' => array('add employee'),
+        'type' => MENU_CALLBACK,
+    );
+    $items['employee/edit/%'] = array(
+        'title' => t('Employee Edit Form'),
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('employees_add_form',2),
+        'access arguments' => array('edit employee'),
+        'type' => MENU_CALLBACK,
+    );
+    $items['employee/delete/%'] = array(
+        'title' => t('Employee Edit Form'),
+        'page callback' => 'delete_employee',
+        'access arguments' => array('delete employee'),
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
 }
 
+/**
+ * @author Farooq Ahmad
+ * @return array 
+ */
 function employees_add_form(){
     $uid = arg(2);
     $emp = load_employee($uid);
 
-	$forms=array();
-	
-	$form['employeeform']=array(
-		'#type'=>'fieldset',
-		'#title'=>'Employee Form'
-	);
-	
-	$form['employeeform']['id']=array(
-		'#type'=>'hidden',
-		'#title'=>'',
-		'#default_value'=>isset($emp->id) ? $emp->id : ''
-	);
-	
-	$form['employeeform']['name']=array(
-		'#type'=>'textfield',
-		'#title'=>'Name',
-		'#size'=>40,
-		'#required'=>true,
-		'#default_value'=>isset($emp->name) ? $emp->name : ''
-	);
-	$form['employeeform']['email']=array(
-		'#type'=>'textfield',
-		'#title'=>'Email',
-		'#size'=>40,
-		'#required'=>true,
-		'#default_value'=>isset($emp->email) ? $emp->email : ''
-	);
-	$form['employeeform']['age']=array(
-		'#type'=>'textfield',
-		'#title'=>'Age',
-		'#size'=>10,
-		'#required'=>true,
-		'#default_value'=>isset($emp->age) ? $emp->age : ''
-	);
-	$form['employeeform']['gender']=array(
-	    '#type' => 'radios',
-	    '#title' => t('Gender'),
-	    '#default_value' => 'Male',
-	    '#options' => array(
-		'Male' => t('Male'), 
-		'Female' => t('Female')
-	    ),
-	    '#default_value'=>isset($emp->gender) ? $emp->gender : ''
-	);
-	
-	$form['employeeform']['address']=array(
-	    '#type'=>'textfield',
-	    '#title'=>'Address',
-	    '#size'=>90,
-	    '#default_value'=>isset($emp->address) ? $emp->address : ''
-	);
-	$form['employeeform']['nationality']=array(
-	    '#type'=>'select',
-	    '#title'=>'Nationality',
-	    '#options' => array(
-		'indian' => t('Indian'),
-		'american' => t('American'),
-		'arabian' => t('Arabian'),
-	    ),
-	    '#default_value'=>isset($emp->nationality) ? $emp->nationality : ''
-	);
-	
-	$form['employeeform']['salary']=array(
-	    '#type'=>'textfield',
-	    '#title'=>'Salary',
-	    '#size'=>20,
-	    '#required'=>true,
-	    '#default_value'=>isset($emp->salary) ? $emp->salary : ''
-	);
-	$form['employeeform']['save']=array(
-		'#type'=>'submit',
-		'#value'=>'Submit',
-	);
-	$form['employeeform']['cancel']=array(
-		'#type'=>'reset',
-		'#value'=>'Cancel',
-	);
-	return $form;
+    $forms=array();
+
+    $form['employeeform'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Employee Form')
+    );
+
+    $form['employeeform']['id'] = array(
+        '#type' => 'hidden',
+        '#title' => '',
+        '#default_value' => isset($emp->id) ? $emp->id : ''
+    );
+
+    $form['employeeform']['name'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Name'),
+        '#size' => 40,
+        '#required' => true,
+        '#default_value' => isset($emp->name) ? $emp->name : ''
+    );
+    $form['employeeform']['email'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Email'),
+        '#size' => 40,
+        '#required' => true,
+        '#default_value' => isset($emp->email) ? $emp->email : ''
+    );
+    $form['employeeform']['age'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Age'),
+        '#size' => 10,
+        '#required' => true,
+        '#default_value' => isset($emp->age) ? $emp->age : ''
+    );
+    $form['employeeform']['gender'] = array(
+        '#type' => 'radios',
+        '#title' => t('Gender'),
+        '#options' => array(
+            'Male' => t('Male'), 
+            'Female' => t('Female')
+        ),
+        '#default_value' => isset($emp->gender) ? $emp->gender : t('Male')
+    );
+
+    $form['employeeform']['address'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Address'),
+        '#size' => 90,
+        '#default_value' => isset($emp->address) ? $emp->address : ''
+    );
+    $form['employeeform']['nationality'] = array(
+        '#type' => 'select',
+        '#title' => 'Nationality',
+        '#options' => array(
+            'indian' => t('Indian'),
+            'american' => t('American'),
+            'arabian' => t('Arabian'),
+        ),
+        '#default_value' => isset($emp->nationality) ? $emp->nationality : ''
+    );
+
+    $form['employeeform']['salary'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Salary'),
+        '#size' => 20,
+        '#required' => true,
+        '#default_value' => isset($emp->salary) ? $emp->salary : ''
+    );
+    $form['employeeform']['save'] = array(
+        '#type' => 'submit',
+        '#value' => t('Submit'),
+    );
+    $form['employeeform']['cancel'] = array(
+        '#type' => 'reset',
+        '#value' => t('Cancel'),
+    );
+    return $form;
 }
 
 /**
- *
+ * @author Farooq Ahmad
  * @param type $form
  * @param type $form_state 
  */
 function employees_add_form_validate($form, $form_state)
 {
-
     $val= & $form_state['values'];
+
     if(!filter_var($val['email'], FILTER_VALIDATE_EMAIL))
     {
-	form_set_error('email','Email is not valid.');
+	form_set_error('email', t('Email is not valid.'));
     }
     
     if(!filter_var($val['age'], FILTER_VALIDATE_INT))
     {
-	form_set_error('age','Age must be numeric.');
+	form_set_error('age', t('Age must be numeric.'));
     }
     elseif($val['age'] > 99)
     {
@@ -173,15 +177,16 @@ function employees_add_form_validate($form, $form_state)
     
     if(!filter_var($val['salary'], FILTER_VALIDATE_FLOAT))
     {
-	form_set_error('salary','Salay can contain only numeric values.');
+	form_set_error('salary', t('Salay can contain only numeric values.'));
     }
     elseif($val['salary'] > 50000)
     {
-	form_set_error('salary','Salary can be at most 50000 thousand.');
+	form_set_error('salary', t('Salary can be at most 50000 thousand.'));
     }
 }
+
 /**
- *
+ * @author Farooq Ahmad
  * @param type $form
  * @param type $form_state 
  */
@@ -190,15 +195,15 @@ function employees_add_form_submit($form, $form_state)
     $val = & $form_state['values'];
     
     $data = array(
-	    'name' => $val['name'],
-	    'email' => $val['email'],
-	    'age' => $val['age'],
-	    'gender' => $val['gender'],
-	    'address' => $val['address'],
-	    'nationality' => $val['nationality'],
-	    'salary' => $val['salary'],
-	    'created' => time()
-	);
+        'name' => $val['name'],
+        'email' => $val['email'],
+        'age' => $val['age'],
+        'gender' => $val['gender'],
+        'address' => $val['address'],
+        'nationality' => $val['nationality'],
+        'salary' => $val['salary'],
+        'created' => time()
+    );
     
     if(isset($val['id']) && $val['id']!='')
     {
@@ -208,19 +213,24 @@ function employees_add_form_submit($form, $form_state)
     {	
 	$handle = db_insert('employee')->fields($data)->execute();
     }
+
     if($handle)
     {
-	drupal_set_message('Emaployee information is saved');
+	drupal_set_message(t('Emaployee information is saved'));
 	drupal_goto('employee/list_employees');
     }
     else
     {
-	drupal_set_message('There was problem to save employee information, please try again.','error');
+	drupal_set_message(t('There was problem to save employee information, please try again.'),'error');
 	drupal_goto('employee/edit/'.$val['id']);
     }
     
 }
 
+/**
+ * @author Farooq Ahmad
+ * @return void
+ */
 function delete_employee()
 {
     $eid = arg(2);
@@ -229,45 +239,55 @@ function delete_employee()
 
     if($handle)
     {
-	drupal_set_message('Employee deleted.');
+	drupal_set_message(t('Employee deleted.'));
     }
     else
     {
-	drupal_set_message('There was problem to delete employee information, please try again.','error');
+	drupal_set_message(t('There was problem to delete employee information, please try again.'),'error');
     }
     drupal_goto('employee/list_employees');
 }
 
-function list_employees() {
+/**
+ * @author Farooq Ahmad
+ * @return string 
+ */
+function list_employees()
+{
     
-    if (isset($_GET['sort']) && isset($_GET['order'])) {
+    if (isset($_GET['sort']) && isset($_GET['order']))
+    {
 	// Sort it Ascending or Descending?
 	if ($_GET['sort'] == 'asc')
+        {
 	    $sort = 'ASC';
+        }
 	else
+        {
 	    $sort = 'DESC';
+        }
 
 	// Which column will be sorted
 	switch ($_GET['order']) {
-	    case 'Name':
+	    case t('Name'):
 		$order = 'name';
 		break;
-	    case 'Email':
+	    case t('Email'):
 		$order = 'email';
 		break;
-	    case 'Age':
+	    case t('Age'):
 		$order = 'age';
 		break;
-	    case 'Gender':
+	    case t('Gender'):
 		$order = 'gender';
 		break;
-	    case 'Address':
+	    case t('Address'):
 		$order = 'address';
 		break;
-	    case 'Nationality':
+	    case t('Nationality'):
 		$order = 'nationality';
 		break;
-	    case 'Salary':
+	    case t('Salary'):
 		$order = 'salary';
 		break;
 	    default:
@@ -280,7 +300,7 @@ function list_employees() {
     }
     
     $output = "";
-    $content = '<p align="right">'.l('Add New','employee/add',array('title'=>'Add new employee details')).'</p>';
+    $content = '<p align="right">'.l(t('Add New'), 'employee/add', array('title' => t('Add new employee details'))).'</p>';
     $output .= $content;
     // Select table
     $query = db_select("employee", "r");
@@ -334,9 +354,10 @@ function list_employees() {
     $rows = array();
 
     // Looping for filling the table rows
-    while ($data = $result->fetchObject()) {
+    while ($data = $result->fetchObject()) 
+    {
 	// Fill the table rows
-	$action_link = l('Edit','employee/edit/'.$data->id)." | ".l('Delete', 'employee/delete/'.$data->id);
+	$action_link = l(t('Edit'), 'employee/edit/'.$data->id)." | ".l(t('Delete'), 'employee/delete/'.$data->id);
 	$rows[] = array(
 	    $data->name,
 	    $data->email,
@@ -351,20 +372,25 @@ function list_employees() {
 
     // Output of table with the paging
     $output .= theme_table(
-		    array(
-			"header" => $header,
-			"rows" => $rows,
-			"attributes" => array(),
-			"sticky" => true, // Table header will be sticky
-			"caption" => "",
-			"colgroups" => array(),
-			"empty" => t("Table has no row!") // The message to be displayed if table is empty
-		    )
-	    ) . theme("pager");
+            array(
+                "header" => $header,
+                "rows" => $rows,
+                "attributes" => array(),
+                "sticky" => true, // Table header will be sticky
+                "caption" => "",
+                "colgroups" => array(),
+                "empty" => t("Table has no row!") // The message to be displayed if table is empty
+            )
+    ) . theme("pager");
 
     return $output;
 }
 
+/**
+ * @author Farooq Ahmad
+ * @param type $eid
+ * @return object 
+ */
 function load_employee($eid=null)
 {
     $employee = new stdClass();
